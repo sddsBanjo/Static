@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity, Touchable } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import MapView, { Marker } from "react-native-maps"
 
-export default function MomentCard({ moment }) {
+export default function MomentCard({ moment, onDelete }) {
     const dateObj = new Date(moment.created_at)
     const date = dateObj.toLocaleDateString("pt-BR")
     const time = dateObj.toLocaleTimeString("pt-BR", {
@@ -53,7 +53,12 @@ export default function MomentCard({ moment }) {
                         {moment.latitude.toFixed(5)}, {moment.longitude.toFixed(5)}
                     </Text>
                 )}
-
+                <TouchableOpacity style={styles.deleteButton} onPress={() => onDelete(moment.id)}>
+                    <Ionicons name="trash-outline" size={18} color="#ffffff" />
+                    <Text style={styles.deleteButtonText}>
+                        Excluir momento
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -72,53 +77,59 @@ const styles = StyleSheet.create({
         elevation: 4,
         overflow: "hidden",
     },
-
     sideBar: {
         width: 6,
-        backgroundColor: "#7C3AED", // roxo do app
+        backgroundColor: "#7C3AED",
     },
-
     content: {
         flex: 1,
         padding: 16,
     },
-
     title: {
         fontSize: 20,
         fontWeight: "700",
         color: "#1E1E1E",
         marginBottom: 6,
     },
-
     metaRow: {
         flexDirection: "row",
         alignItems: "center",
         gap: 6,
         marginBottom: 10,
     },
-
     metaText: {
         fontSize: 13,
         color: "#7C3AED",
         fontWeight: "500",
     },
-
     description: {
         fontSize: 15,
         color: "#555",
         lineHeight: 20,
         marginBottom: 12,
     },
-
     map: {
         width: "100%",
         height: 140,
         borderRadius: 12,
         marginBottom: 8,
     },
-
     coords: {
         fontSize: 11,
         color: "#888",
     },
+    deleteButton: {
+        marginTop: 14,
+        backgroundColor: "#EF4444",
+        borderRadius: 10,
+        paddingVertical: 10,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    deleteButtonText: {
+        color: "#ffffff",
+        fontWeight: "600",
+        marginLeft: 8
+    }
 })
