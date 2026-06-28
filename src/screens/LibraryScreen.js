@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { View, Text, FlatList } from 'react-native'
-
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { FlatList, StyleSheet } from 'react-native'
+import MomentCard from "../components/MomentCard"
 import { getMoments } from '../database/database'
 
 export default function LibraryScreen({ reloadLibrary }) {
@@ -17,25 +18,22 @@ export default function LibraryScreen({ reloadLibrary }) {
   }, [reloadLibrary])
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <FlatList
         data={moments}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View
-            style={{
-              borderWidth: 1,
-              padding: 15,
-              marginBottom: 10
-            }}
-          >
-            <Text>{item.title}</Text>
-            <Text>{item.description}</Text>
-            <Text>Latitude: {item.latitude}</Text>
-            <Text>Longitude: {item.longitude}</Text>
-          </View>
+          <MomentCard moment={item} />
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F5F7",
+    padding: 16,
+  },
+});

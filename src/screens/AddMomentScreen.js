@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { View, Text, TextInput, Button } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Text, TextInput, Button } from 'react-native'
 import { addMoment } from '../database/database'
 import * as Location from 'expo-location'
 
@@ -45,7 +46,7 @@ export default function AddMomentScreen({ onMomentSaved }) {
   }
 
   return (
-    <View style={{ padding: 20 }}>
+    <SafeAreaView style={{ flex: 1, padding: 20 }} edges={['top']}>
       <Text>Título</Text>
       <TextInput
         value={title}
@@ -74,6 +75,6 @@ export default function AddMomentScreen({ onMomentSaved }) {
         title="Salvar Momento"
         onPress={handleSave}
       />
-    </View>
+    </SafeAreaView>
   )
 }
