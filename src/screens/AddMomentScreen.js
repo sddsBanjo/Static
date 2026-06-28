@@ -1,18 +1,36 @@
 import { useState } from 'react'
 import { View, Text, TextInput, Button } from 'react-native'
 import { addMoment } from '../database/database'
+import * as Location from 'expo-location'
 
 export default function AddMomentScreen({ onMomentSaved }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
 
+  async function getCurrentLocation() {
+    const { status } = await Location.requestForegroundPermissionsAsync()
+
+    if (status !== 'granted') {
+      throw new Error('Permissão de localização negada.')
+    }
+
+    const location = await Location.getCurrentPositionAsync({})
+
+    return {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude
+    }
+  }
+
   async function handleSave() {
     try {
+      const location = await getCurrentLocation()
+      
       await addMoment(
         title,
         description,
-        null,
-        null
+        location.latitude,
+        location.longitude
       )
 
       setTitle('')

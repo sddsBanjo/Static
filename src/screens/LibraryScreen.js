@@ -31,6 +31,8 @@ export default function LibraryScreen({ reloadLibrary }) {
           >
             <Text>{item.title}</Text>
             <Text>{item.description}</Text>
+            <Text>Latitude: {item.latitude}</Text>
+            <Text>Longitude: {item.longitude}</Text>
           </View>
         )}
       />
