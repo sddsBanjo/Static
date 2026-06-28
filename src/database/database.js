@@ -20,6 +20,10 @@ export async function initDatabase() {
 }
 
 export function getDatabase() {
+    if (!db) {
+        throw new Error("Banco de dados ainda não foi inicializado.")
+    }
+
     return db
 }
 

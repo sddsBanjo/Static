@@ -3,17 +3,18 @@ import { View, Text, FlatList } from 'react-native'
 
 import { getMoments } from '../database/database'
 
-export default function LibraryScreen() {
+export default function LibraryScreen({ reloadLibrary }) {
   const [moments, setMoments] = useState([])
 
   async function loadMoments() {
+    console.log("Carregando momentos...")
     const data = await getMoments()
     setMoments(data)
   }
   
   useEffect(() => {
     loadMoments()
-  }, [])
+  }, [reloadLibrary])
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
@@ -32,7 +33,7 @@ export default function LibraryScreen() {
             <Text>{item.description}</Text>
           </View>
         )}
-    />
-  </View>
+      />
+    </View>
   );
 }

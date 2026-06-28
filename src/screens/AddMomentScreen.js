@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { View, Text, TextInput, Button } from 'react-native'
 import { addMoment } from '../database/database'
 
-export default function AddMomentScreen() {
+export default function AddMomentScreen({ onMomentSaved }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
 
@@ -17,6 +17,8 @@ export default function AddMomentScreen() {
 
       setTitle('')
       setDescription('')
+
+      onMomentSaved()
 
       console.log('Momento salvo!')
     } catch (error) {

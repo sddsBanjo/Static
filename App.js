@@ -1,9 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { initDatabase } from './src/database/database'
-
 
 import LibraryScreen from './src/screens/LibraryScreen'
 import AddMomentScreen from './src/screens/AddMomentScreen'
@@ -11,10 +10,14 @@ import AddMomentScreen from './src/screens/AddMomentScreen'
 const Menu = createBottomTabNavigator()
 
 export default function App() {
+  const [databaseReady, setDatabaseReady] = useState(false)
+  const [reloadLibrary, setReloadLibrary] = useState(0)
+
   useEffect(() => {
     async function startDatabase() {
       try {
         await initDatabase()
+        setDatabaseReady(true)
         console.log("Banco de dados inicializado com sucesso!")
       } catch (error) {
         console.log("Erro ao inicializar o banco de dados: ", {error})
@@ -24,6 +27,10 @@ export default function App() {
     startDatabase()
   }, [])
   
+  if (!databaseReady) {
+    return null
+  }
+
   return (
     <NavigationContainer>
       <Menu.Navigator
@@ -44,8 +51,15 @@ export default function App() {
           tabBarInactiveTintColor: 'gray',
           }
         )}>
-        <Menu.Screen name="Biblioteca" component={LibraryScreen} />
-        <Menu.Screen name="Novo Momento" component={AddMomentScreen} />
+        <Menu.Screen name="Biblioteca">
+          {() => <LibraryScreen reloadLibrary={reloadLibrary} />}
+        </Menu.Screen>
+        <Menu.Screen name="Novo Momento">
+          {() => (
+            <AddMomentScreen
+              onMomentSaved={() => setReloadLibrary((v) => v + 1)} />
+          )}
+        </Menu.Screen>
       </Menu.Navigator>
     </NavigationContainer>
   )
